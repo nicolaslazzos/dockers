@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+  mongo-setup:
+    image: mongo:latest
+    container_name: mongo-setup
+    networks:
+      - mongo
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    volumes:
+      - ./scripts:/scripts
+    entrypoint: ["bash", "/scripts/initiate-replica.sh"]
+
+  mongo1:
+    image: mongo:latest
+    container_name: mongo1
+    networks:
+      - mongo
+    volumes:
+      - data:/data/db
+      - config:/data/configdb
+      - ./scripts:/scripts
+    hostname: mongo1
+    ports:
+      - 127.0.10.1:27017:27017
+    entrypoint: ["bash", "/scripts/initiate-primary.sh"]
+
+  mongo2:
+    image: mongo:latest
+    container_name: mongo2
+    networks:
+      - mongo
+    hostname: mongo2
+    ports:
+      - 127.0.10.1:27018:27017
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+
+  mongo3:
+    image: mongo:latest
+    container_name: mongo3
+    networks:
+      - mongo
+    hostname: mongo3
+    ports:
+      - 127.0.10.1:27019:27017
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+
+networks:
+  mongo:
+    driver: bridge
+
+volumes:
+  data:
+  config:
