@@ -12,7 +12,7 @@ services:
       - mongo3
     volumes:
       - ./scripts:/scripts
-    entrypoint: ["bash", "/scripts/initiate-replica.sh"]
+    entrypoint: [ "bash", "/scripts/initiate-replica.sh" ]
 
   mongo1:
     image: mongo:latest
@@ -26,7 +26,7 @@ services:
     hostname: mongo1
     ports:
       - 127.0.10.1:27017:27017
-    entrypoint: ["bash", "/scripts/initiate-primary.sh"]
+    entrypoint: [ "bash", "/scripts/initiate-primary.sh" ]
 
   mongo2:
     image: mongo:latest
@@ -36,7 +36,13 @@ services:
     hostname: mongo2
     ports:
       - 127.0.10.1:27018:27017
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
 
   mongo3:
     image: mongo:latest
@@ -46,7 +52,13 @@ services:
     hostname: mongo3
     ports:
       - 127.0.10.1:27019:27017
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
 
 networks:
   mongo:
