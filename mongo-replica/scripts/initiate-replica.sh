@@ -1,12 +1,12 @@
 #!/bin/bash
 
-until mongo --host mongo1 --eval "print(\"waited for connection\")"
+until mongosh --host mongo1 --eval "print(\"waited for connection\")"
 do
     sleep 2
 done
 
 echo "creating replica set"
-mongo --host mongo1 <<EOF
+mongosh --host mongo1 <<EOF
 var config = {
   _id : 'rs0',
   version: 1,
