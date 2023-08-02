@@ -1,0 +1,8 @@
+version: '3.5'
+
+services:
+  redis-stack-server:
+    # includes redis json and other stuff
+    image: redis/redis-stack-server:latest
+    ports:
+      - '6379:6379'
